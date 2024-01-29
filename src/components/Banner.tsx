@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Movie } from '../../types';
 import Image from 'next/image';
 import { baseURL } from '../../url';
@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function Banner({ original }: Props) {
+	const loading = useRef<any>(null);
 	const [Movie, setMovie] = useState<Movie | null>(null);
 	console.log(Movie);
 
@@ -31,11 +32,17 @@ export default function Banner({ original }: Props) {
 							quality={70}
 							sizes='(max-width: 768px) 100vw , (max-width: 1200px) 70vw, 100vw'
 							className='object-cover'
+							onLoadingComplete={() => loading.current.remove()}
 						/>
 					</div>
 
 					{/* gradient layer */}
 					<div className='absolute z-[2] top-0 left-0 w-full h-full bg-gradient1 '></div>
+
+					{/* loading bar */}
+					<div
+						ref={loading}
+						className='w-[40px] h-[40px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border-4 border-[orange] border-t-[transparent] rounded-[50%] z-[3] animate-ani-rotation '></div>
 
 					{/* title */}
 					<h1 className='relative z-[3] text-2xl font-bold md:text-4xl lg:text-7xl'>{Movie?.title || Movie?.name}</h1>
