@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import requests from '@/utils/request';
 import { Movie } from '../../types';
 import Banner from '@/components/Banner';
+import List from '@/components/List';
 
 // npm i tailwind-scrollbar tailwind-scrollbar-hide
 
@@ -34,6 +35,9 @@ const Home: NextPage<Props> = (props: Props) => {
 			<Header />
 			<main className='relative'>
 				<Banner original={props.original} />
+				{Object.values(props).map((category, idx) => (
+					<List key={idx} movies={category} title={Object.keys(props)[idx]} />
+				))}
 			</main>
 		</div>
 	);
