@@ -2,13 +2,20 @@ import { useState, useEffect, useRef } from 'react';
 import { Movie } from '../../types';
 import Image from 'next/image';
 import { baseURL } from '../../url';
+import type { NextPage } from 'next';
 
 interface Props {
 	original: Movie[];
 }
 
-export default function Banner({ original }: Props) {
-	const loading = useRef<any>(null);
+const Banner: NextPage<Props> = ({ original }: Props) => {
+	// useRef에는 초기값이 없을 수가 없으므로 직접 값을 수동으로 지정해야 하기 때문임.
+	// useState와 다르게 useRef는 unionType을 지정하지 않더라도 인수로 지정한 초기값을 자동으로 유니온타입 설정
+	// 돔을 담을 때에는 무조건 아래처럼 useRef<HTMLDivElement>(null) 로,
+	// 만약 숫자값을 담을 거면 useRef<number>(0) 이런 식으로 응용하면 됨.
+	const loading = useRef<HTMLDivElement>(null);
+	// useState는 초기값을 집어넣지 않더라도 추후 담기는 값을 인지해서 타입을 추론함.
+	// 반면 useState는 예외사항에 대한 값을 우리가 무조건 unionType으로 직접 지정해줘야 함.
 	const [Movie, setMovie] = useState<Movie | null>(null);
 	console.log(Movie);
 
@@ -32,7 +39,7 @@ export default function Banner({ original }: Props) {
 							quality={70}
 							sizes='(max-width: 768px) 100vw , (max-width: 1200px) 70vw, 100vw'
 							className='object-cover'
-							onLoadingComplete={() => loading.current.remove()}
+							onLoadingComplete={() => loading.current?.remove()}
 						/>
 					</div>
 
@@ -53,4 +60,6 @@ export default function Banner({ original }: Props) {
 			)}
 		</section>
 	);
-}
+};
+
+export default Banner;
