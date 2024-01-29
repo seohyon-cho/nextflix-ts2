@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import Header from '@/components/Header';
 import requests from '@/utils/request';
 import { Movie } from '../../types';
+import Banner from '@/components/Banner';
 
 interface Props {
 	original: Movie[];
@@ -17,7 +18,6 @@ interface Props {
 // 기본 Next Page 컴포넌트에 적용할 타입을, 미리 Next에서 자체 등록 및 제공되고 있는 NextPage을 가져와서 페이지 타입 지정
 // 해당 pageType을 우리가 만든 것이 아니기 때문에 해당 페이지에 전달되는 props의 타입을 제네릭으로 지정
 const Home: NextPage<Props> = (props: Props) => {
-	console.log(props);
 	return (
 		// w-screen : 100vw, h-screen : 100vh , w-full : 100% , h-full : 100%
 		<div className='relative w-full'>
@@ -28,7 +28,7 @@ const Home: NextPage<Props> = (props: Props) => {
 
 			<Header />
 			<main className='relative'>
-				<h1 className=''>Main Page</h1>
+				<Banner original={props.original} />
 			</main>
 		</div>
 	);
