@@ -27,7 +27,7 @@ const Banner: NextPage<Props> = ({ original }: Props) => {
 
 	console.log(original);
 	return (
-		<section className='flex flex-col h-screen px-4 pt-40 pb-20 space-y-4 md:space-y-10 lg:space-y-14'>
+		<section className='flex flex-col h-[60vh] px-4 pt-40 pb-20 space-y-4 md:space-y-10 md:h-[70vh] lg:space-y-14 lg:h-[85vh]'>
 			{Movie && (
 				<>
 					{/* pic Frame */}
