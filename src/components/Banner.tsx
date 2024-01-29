@@ -18,11 +18,11 @@ export default function Banner({ original }: Props) {
 
 	console.log(original);
 	return (
-		<section className=' h-screen px-4 pb-20 pt-40 flex flex-col space-y-4'>
+		<section className='h-screen px-4 pb-20 pt-40 flex flex-col space-y-4'>
 			{Movie && (
 				<>
 					{/* pic Frame */}
-					<div className='absolute top-0 left-0 z-[1] w-full h-full lg:h-[65vh]'>
+					<div className='absolute top-0 left-0 z-[1] w-full h-full'>
 						<Image
 							src={`${baseURL}original${Movie.backdrop_path}`}
 							alt={`${Movie.name}` || `${Movie.original_title}`}
@@ -33,6 +33,9 @@ export default function Banner({ original }: Props) {
 							className='object-cover'
 						/>
 					</div>
+
+					{/* gradient layer */}
+					<div className='absolute z-[2] top-0 left-0 w-full h-full bg-gradient1 '></div>
 
 					{/* title */}
 					<h1 className='relative z-[3] text-2xl font-bold md:text-4xl lg:text-7xl'>{Movie?.title || Movie?.name}</h1>
