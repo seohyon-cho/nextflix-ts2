@@ -21,18 +21,24 @@ export default function Banner({ original }: Props) {
 		<section className=' h-screen px-4 pb-20 pt-40 flex flex-col space-y-4'>
 			{Movie && (
 				<>
-					<div className='absolute top-0 left-0 z-[1] w-full h-full'>
+					{/* pic Frame */}
+					<div className='absolute top-0 left-0 z-[1] w-full h-full lg:h-[65vh]'>
 						<Image
 							src={`${baseURL}original${Movie.backdrop_path}`}
-							// alt 값은 기본적으로 문자만 전달받도록 타입이 강제되어 있으므로, 템플릿 리터럴 안 쪽에서 변수값이 문자로 반환되도록 처리
 							alt={`${Movie.name}` || `${Movie.original_title}`}
 							fill
 							priority
 							quality={70}
-							sizes='(max-width: 768px) 100vw , (max-width: 1200px) 50vw, 30vw'
+							sizes='(max-width: 768px) 100vw , (max-width: 1200px) 70vw, 100vw'
 							className='object-cover'
 						/>
 					</div>
+
+					{/* title */}
+					<h1 className='relative z-[3] text-2xl font-bold md:text-4xl lg:text-7xl'>{Movie?.title || Movie?.name}</h1>
+
+					{/* overview */}
+					<p className='relative z-[3] text-xs md:text-lg lg:text-2xl'>{Movie?.overview}</p>
 				</>
 			)}
 		</section>
