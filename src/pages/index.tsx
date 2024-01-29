@@ -1,8 +1,23 @@
 import Head from 'next/head';
 import type { NextPage } from 'next';
 import Header from '@/components/Header';
+import requests from '@/utils/request';
+import { Movie } from '../../types';
 
-const Home: NextPage = () => {
+interface Props {
+	original: Movie[];
+	top: Movie[];
+	sf: Movie[];
+	drama: Movie[];
+	fantasy: Movie[];
+	comedy: Movie[];
+	action: Movie[];
+}
+
+// 기본 Next Page 컴포넌트에 적용할 타입을, 미리 Next에서 자체 등록 및 제공되고 있는 NextPage을 가져와서 페이지 타입 지정
+// 해당 pageType을 우리가 만든 것이 아니기 때문에 해당 페이지에 전달되는 props의 타입을 제네릭으로 지정
+const Home: NextPage<Props> = (props: Props) => {
+	console.log(props);
 	return (
 		// w-screen : 100vw, h-screen : 100vh , w-full : 100% , h-full : 100%
 		<div className='relative w-full'>
@@ -17,6 +32,30 @@ const Home: NextPage = () => {
 			</main>
 		</div>
 	);
+};
+
+export const getServerSideProps = async () => {
+	// Promise.all([promise객체, promise객체]).then(()=>배열에 인수로 전달될 모든 promise 객체의 상태가 pending이 아닌 fulfilled나 rejected가 되어야지만 이곳의 then 구문이 동기적으로 실행됨. )
+	const [original, top, sf, drama, fantasy, comedy, action] = await Promise.all([
+		fetch(requests.original).then(res => res.json()),
+		fetch(requests.top).then(res => res.json()),
+		fetch(requests.sf).then(res => res.json()),
+		fetch(requests.drama).then(res => res.json()),
+		fetch(requests.fantasy).then(res => res.json()),
+		fetch(requests.comedy).then(res => res.json()),
+		fetch(requests.action).then(res => res.json())
+	]);
+	return {
+		props: {
+			original: original.results,
+			top_rated: top.results,
+			sf: sf.results,
+			drama: drama.results,
+			fantasy: fantasy.results,
+			comedy: comedy.results,
+			action: action.results
+		}
+	};
 };
 
 export default Home;

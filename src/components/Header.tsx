@@ -7,7 +7,7 @@ import { FaBell, FaSearch } from 'react-icons/fa';
 const Header = () => {
 	return (
 		<header className='w-full'>
-			<div className=' flex justify-between items-center space-x-6'>
+			<div className=' flex justify-between items-center space-x-2 md:space-x-10'>
 				<h1>
 					<Image src={logo} alt={'netflix'} width={100} height={100} className='cursor-pointer' />
 				</h1>
