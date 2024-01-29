@@ -26,7 +26,7 @@ interface Props {
 const Home: NextPage<Props> = (props: Props) => {
 	return (
 		// w-screen : 100vw, h-screen : 100vh , w-full : 100% , h-full : 100%
-		<div className='relative w-full'>
+		<div className='relative w-full h-screen overflow-x-hidden scrollbar-thin scrollbar-thumb-[red] scrollbar-track-[transparent]'>
 			<Head>
 				<title>NETFLIX</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -43,7 +43,7 @@ const Home: NextPage<Props> = (props: Props) => {
 	);
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
 	// Promise.all([promise객체, promise객체]).then(()=>배열에 인수로 전달될 모든 promise 객체의 상태가 pending이 아닌 fulfilled나 rejected가 되어야지만 이곳의 then 구문이 동기적으로 실행됨. )
 	const [original, top, sf, drama, fantasy, comedy, action] = await Promise.all([
 		fetch(requests.original).then(res => res.json()),
@@ -63,7 +63,8 @@ export const getServerSideProps = async () => {
 			fantasy: fantasy.results,
 			comedy: comedy.results,
 			action: action.results
-		}
+		},
+		revalidate: 60 * 60 * 60 * 24
 	};
 };
 
