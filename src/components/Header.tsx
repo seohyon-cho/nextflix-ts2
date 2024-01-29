@@ -8,7 +8,8 @@ const Header = () => {
 					<Image src={logo} alt={'netflix'} width={100} height={100} className='cursor-pointer' />
 				</h1>
 
-				<ul className='flex gap-8'>
+				{/* tailwind에서는 반응형 작업 시, 기본적으로 mobile first임. (모바일 우선) */}
+				<ul className='space-x-r1 hidden md:flex'>
 					<li className='headerLink'>menu</li>
 					<li className='headerLink'>menu</li>
 					<li className='headerLink'>menu</li>
