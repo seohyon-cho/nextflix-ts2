@@ -5,6 +5,7 @@ import requests from '@/utils/request';
 import { Movie } from '../../types';
 import Banner from '@/components/Banner';
 import List from '@/components/List';
+import getData from '@/hooks/useAuth';
 
 interface Props {
 	original: Movie[];
@@ -20,6 +21,8 @@ interface Props {
 //함수의 파라미터에 중복해서 타입을 전달할 필요가 없음
 //하지만 NexPage라는 기본 제공타입을 연결하지 않는다면 파라미터에 타입지정은 필수
 const Home: NextPage<Props> = props => {
+	const { InitialLoading } = getData();
+
 	return (
 		<div className='relative w-full h-screen overflow-x-hidden scrollbar-thin scrollbar-thumb-[red] scrollbar-track-[transparent]'>
 			<Head>
@@ -29,7 +32,8 @@ const Home: NextPage<Props> = props => {
 
 			<main className='relative'>
 				<Header />
-				<Banner original={props.original} />
+				{/* 로그인 전에는 굳이 배너 자체를 마운트하지 않고 출력 (배너에 있는 큰 이미지 LCP를 막기 위함임.) */}
+				{InitialLoading.current && <Banner original={props.original} />}
 				{Object.values(props).map((category, idx) => (
 					<List key={idx} movies={category} title={Object.keys(props)[idx]} />
 				))}
@@ -39,7 +43,7 @@ const Home: NextPage<Props> = props => {
 };
 
 //인증요청을 할떄마다 서버쪽에 pre-render page데이터와 클라이언트에 요청된 데이터를 매번 매칭시키기 위해서는
-//SSR방식으로 client에서 요청이 들어올때다 매번 서버에서 변경된 데이터로 다시 pre-build내보내기 위함
+//SSR방식으로 client에서 요청이 들어올때다 매번 서버에서 변경된 데이터로 다시 pre-build해서 내보냄
 //CSR방식을 쓰지 않는 이유는 비록 SSR방식이 요청이 들어올때마다 재 build를 해서 pre-render하긴 하지만 어쨌든 서버에서 완성된 데이터를 넘겨주는 것이므로 SEO방식에 좋음
 //설사 새로운 데이터로 새롭게 서버쪽에 pre-render할때 시간이 오래 걸린다고 하더라도 이미 첨 빌드때 만들어놓은 화면을 계속 유지하다가 데이터변경이 완료되면 하이드레이션되는 구조이므로 CSR방식보다는 SSR방식이 여러모로 유리
 export const getServerSideProps = async () => {

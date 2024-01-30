@@ -30,7 +30,7 @@ const AuthContext = createContext<IAuth>({
 export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [UserInfo, setUserInfo] = useState<User | null>(null);
 	//초기에 한번 로딩완료되면 더이상 바뀔일이 없는 값인데 굳이 state에 담아서 불필요한 재렌더링을 방지하기 위해 useRef에 담아줌
-	const InitialLoading = useRef<boolean>(true);
+	const InitialLoading = useRef<boolean>(false);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				router.push('/login');
 			}
 			//한번이라도 인증로직이 실행되면 초기상태를 false로 변경
-			setTimeout(() => (InitialLoading.current = false), 0);
+			setTimeout(() => (InitialLoading.current = true), 0);
 		});
 	}, []); //의존성 배열에서 router제거 (그렇지 않으면 무한로딩 오류)
 
