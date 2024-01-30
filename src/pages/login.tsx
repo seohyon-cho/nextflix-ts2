@@ -17,13 +17,18 @@ const Login: FunctionComponent = () => {
 	const [Login, setLogin] = useState<boolean>(false);
 
 	// register : 원하는 input 요소를 전개연산자로 등록해서, 해당 input의 값을 관리
-	// handleSubmit : 실제 submit 이벤트 발생 시, register에 등록되어있는 input 값들을 인증처리하는 함수
+	// handleSubmit : 실제 submit 이벤트 발생 시, register에 등록되어있는 input 값들의 인증처리 핸들러 함수를 콜백으로 전달받음.
 	// formState : 인증 실패 시, 커스텀 에러 메세지를 등록할 수 있는 객체.
 	const {
 		register,
 		handleSubmit,
 		formState: { errors } // formState 객체 값에서 다시 errors에 등록되어 있는 에러메세지만 추출.
 	} = useForm<Inputs>();
+
+	const join: SubmitHandler<Inputs> = async ({ email, password }) => {
+		console.log('email', email);
+		console.log('password', password);
+	};
 
 	return (
 		<main>
@@ -55,12 +60,16 @@ const Login: FunctionComponent = () => {
 				{/* logo */}
 				<Image width={150} height={150} src={logo} alt='nextflix' className='absolute left-4 top-4 cursor-pointer md:left-10 md:top-6 z-[3]' />
 
-				<form className='relative z-[5] bg-black/70 py-10 px-6 space-y-8'>
+				{/* submit 이벤트 발생 시, handleSubmit이 인증처리를 해주고, 인증의 결과값을 등록된 콜백함수에 전달.  */}
+				<form onSubmit={handleSubmit(join)} className='relative z-[5] bg-black/70 py-10 px-6 space-y-8'>
 					<h1 className='text-4xl font-semibold'>Sign In</h1>
 
 					<div className='space-y-4'>
-						<input type='email' placeholder='Email' className='input' />
-						<input type='password' placeholder='Password' className='input' />
+						<input type='email' placeholder='Email' className='input' {...register('email', { required: true })} />
+						{/* 인증 실패 시, 비구조화 할당으로 뽑아낸 errors 객체에 전달한 property 명으로 에러값 전달 */}
+						{errors.email && <span>Enter a valid Email</span>}
+						<input type='password' placeholder='Password' className='input' {...(register('password'), { required: true })} />
+						{errors.password && <span>Enter a valid Password</span>}
 					</div>
 
 					<button className='w-full rounded bg-[red] py-3 font-semibold'>Sign In</button>
