@@ -35,8 +35,8 @@ const Home: NextPage<Props> = props => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<Header />
 			<main className='relative'>
+				<Header />
 				<Banner original={props.original} />
 				{Object.values(props).map((category, idx) => (
 					<List key={idx} movies={category} title={Object.keys(props)[idx]} />

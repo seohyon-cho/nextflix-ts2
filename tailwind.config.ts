@@ -25,6 +25,7 @@ const config: Config = {
 			}
 		}
 	},
-	plugins: [require('tailwind-scrollbar'), require('tailwind-scrollbar-hide')]
+	plugins: [require('tailwind-scrollbar'), require('tailwind-scrollbar-hide')],
+	'headwind.runOnSave': true
 };
 export default config;
