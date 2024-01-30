@@ -14,29 +14,21 @@ interface Inputs {
 
 const Login: FunctionComponent = () => {
 	const { signIn, signUp } = getData();
-	console.log(signIn);
 	const [IsLoading, setIsLoading] = useState<boolean>(true);
 	const [Login, setLogin] = useState<boolean>(false);
-	const [LoginVal, setLoginVal] = useState({ email: '', password: '' });
 
-	//register: 원하는 input요소를 전개연산자로 등록해서 값을 관리
-	//handleSubmit: submit이벤트 발생시 register에 등록된 input값들의 인증처리 핸들러함수를 콜백으로 전달받음
-	//formState: 인증실패시 커스텀에러메세지를 등록할 수 있는 객체
 	const {
 		register,
 		handleSubmit,
-		formState: { errors } //formState객체값에서 다시 errors에 등록되어 있는 에러메세지만 추출
+		formState: { errors }
 	} = useForm<Inputs>();
 
-	//인증 성공시 handleSubmit에 의해서 자동으로 실행될 콜백함수
 	const join: SubmitHandler<Inputs> = async ({ email, password }) => {
-		console.log('email', email);
-		console.log('password', password);
 		if (Login) {
-			//로그인실행
+			//Login(true) : 로그인함수 호출
 			await signIn(email, password);
 		} else {
-			//회원가입 실행
+			//Login(false) : 회원가입함수 호출
 			await signUp(email, password);
 		}
 	};
@@ -80,25 +72,29 @@ const Login: FunctionComponent = () => {
 							type='text'
 							placeholder='Email'
 							className='input'
-							{...register('email', { required: true, minLength: 5, maxLength: 20, pattern: /@/ })} //정규표현식 @포함
+							{...register('email', { required: true, minLength: 5, maxLength: 20, pattern: /@/ })}
 						/>
-						{/* 인증 실패시 비구조할당으로 뽑아낸 errors객체에 전달한 property명으로 에러값 전달 */}
 						{errors.email && <span>Enter a valid Email</span>}
 						<input
 							type='password'
 							placeholder='Password'
 							className='input'
 							{...register('password', { required: true, minLength: 4, maxLength: 10, pattern: /[!@#$%^&*()]+[a-zA-Z]+[0-9]+/ })}
-							//특수문자+영문+숫자+이어지는값 순으로 작성
 						/>
 						{errors.password && <span>Enter a valid Password</span>}
 					</div>
 
-					<button className='w-full rounded bg-[red] py-3 font-semibold'>Sign In</button>
+					{/* SignIn 버튼 클릭시 Login값 true로변경 */}
+					<button className='w-full rounded bg-[red] py-3 font-semibold' onClick={() => setLogin(true)}>
+						Sign In
+					</button>
 
 					<div className='text-[gray]'>
 						New to Nextflix?
-						<button className='ml-4 text-white hover:underline'>Sign Up Now</button>
+						{/* Sign Up 버튼 클릭시 Login 값 false로 변경 */}
+						<button className='ml-4 text-white hover:underline' onClick={() => setLogin(false)}>
+							Sign Up Now
+						</button>
 					</div>
 				</form>
 			</div>
