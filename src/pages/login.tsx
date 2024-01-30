@@ -4,8 +4,12 @@ import { FunctionComponent } from 'react';
 import { BounceLoader } from 'react-spinners';
 import { useState } from 'react';
 import logo from '@/public/logo.svg';
+// import firebase from '@/firebase';
+// console.log(firebase);
 
 const Login: FunctionComponent = () => {
+	// const { getAuth } = firebase.auth;
+	// console.log(getAuth());
 	const [IsLoading, setIsLoading] = useState(true);
 	return (
 		<main>
