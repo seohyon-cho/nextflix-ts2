@@ -1,3 +1,4 @@
+import { FunctionComponent } from 'react';
 import { Movie } from '../../types';
 import Image from 'next/image';
 import { baseURL } from '../../url';
@@ -14,7 +15,7 @@ interface ScrollProp {
 	clientWidth: number | null;
 }
 
-const List = ({ movies, title }: Props) => {
+const List: FunctionComponent<Props> = ({ movies, title }) => {
 	// listFrame에는 UL 요소가 담기도록 type 지정
 	const listFrame = useRef<HTMLUListElement>(null);
 

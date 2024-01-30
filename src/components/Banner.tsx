@@ -1,3 +1,4 @@
+import { FunctionComponent } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Movie } from '../../types';
 import Image from 'next/image';
@@ -8,7 +9,7 @@ interface Props {
 	original: Movie[];
 }
 
-const Banner = ({ original }: Props) => {
+const Banner: FunctionComponent<Props> = ({ original }) => {
 	// useRef에는 초기값이 없을 수가 없으므로 직접 값을 수동으로 지정해야 하기 때문임.
 	// useState와 다르게 useRef는 unionType을 지정하지 않더라도 인수로 지정한 초기값을 자동으로 유니온타입 설정
 	// 돔을 담을 때에는 무조건 아래처럼 useRef<HTMLDivElement>(null) 로,
