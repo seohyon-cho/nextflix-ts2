@@ -4,7 +4,7 @@ import { Movie } from '../../types';
 import Image from 'next/image';
 import { baseURL } from '../../url';
 import { FaPlay, FaInfoCircle, FaInfo } from 'react-icons/fa';
-import { modalState } from '@/recoil/globalAtom';
+import { modalState, movieState } from '@/recoil/globalAtom';
 import { useRecoilState } from 'recoil';
 
 interface Props {
@@ -15,13 +15,13 @@ const Banner: FunctionComponent<Props> = ({ original }) => {
 	const loading = useRef<HTMLDivElement>(null);
 	const [Movie, setMovie] = useState<Movie | null>(null);
 	const [ShowModal, setShowModal] = useRecoilState(modalState);
+	const [MovieInfo, setMovieInfo] = useRecoilState(movieState);
 
 	useEffect(() => {
 		const randomNum = Math.floor(Math.random() * original.length);
 		setMovie(original[randomNum]);
 	}, [original]);
 
-	console.log(original);
 	return (
 		<section className='relative flex flex-col h-[60vh] justify-end px-4 pt-40 pb-5 space-y-4 md:h-[70vh] md:pd-15 md:space-y-8 lg:space-y-14 lg:h-[85vh] lg:pb-20'>
 			{Movie && (
@@ -56,7 +56,12 @@ const Banner: FunctionComponent<Props> = ({ original }) => {
 
 					{/* button set */}
 					<nav className='relative z-[3] flex gap-3'>
-						<button className='bannerButton bg-[red]' onClick={() => setShowModal(true)}>
+						<button
+							className='bannerButton bg-[red]'
+							onClick={() => {
+								setShowModal(true);
+								setMovieInfo(Movie);
+							}}>
 							<FaPlay />
 							Play{' '}
 						</button>
