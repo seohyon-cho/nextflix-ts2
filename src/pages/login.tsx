@@ -25,6 +25,7 @@ const Login: FunctionComponent = () => {
 		formState: { errors } // formState 객체 값에서 다시 errors에 등록되어 있는 에러메세지만 추출.
 	} = useForm<Inputs>();
 
+	// 인증 성공 시, handleSubmit에 의해서 자동으로 실행될 콜백 함수.
 	const join: SubmitHandler<Inputs> = async ({ email, password }) => {
 		console.log('email', email);
 		console.log('password', password);
@@ -65,10 +66,21 @@ const Login: FunctionComponent = () => {
 					<h1 className='text-4xl font-semibold'>Sign In</h1>
 
 					<div className='space-y-4'>
-						<input type='email' placeholder='Email' className='input' {...register('email', { required: true })} />
+						<input
+							type='text'
+							placeholder='Email'
+							className='input'
+							{...register('email', { required: true, minLength: 5, maxLength: 20, pattern: /@/ })} // 정규표현식으로 @ 포함 시키기
+						/>
 						{/* 인증 실패 시, 비구조화 할당으로 뽑아낸 errors 객체에 전달한 property 명으로 에러값 전달 */}
 						{errors.email && <span>Enter a valid Email</span>}
-						<input type='password' placeholder='Password' className='input' {...(register('password'), { required: true })} />
+						<input
+							type='password'
+							placeholder='Password'
+							className='input'
+							// 정규표현식으로 특수문자+영문+숫자 포함시키기. (이 상태에서는 조건 나열하는 순서도 중요함. 아래 식 기준으로는 특문+영문+숫자 순서여야만 인증됨.)
+							{...register('password', { required: true, minLength: 4, maxLength: 10, pattern: /[~!@#$%^&*()]+[a-zA-Z]+[0-9]/ })}
+						/>
 						{errors.password && <span>Enter a valid Password</span>}
 					</div>
 
