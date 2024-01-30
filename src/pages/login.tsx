@@ -4,13 +4,27 @@ import { FunctionComponent } from 'react';
 import { BounceLoader } from 'react-spinners';
 import { useState } from 'react';
 import logo from '@/public/logo.svg';
-// import firebase from '@/firebase';
-// console.log(firebase);
+import { SubmitHandler, useForm } from 'react-hook-form';
+// npm i react-hook-form
+
+interface Inputs {
+	email: string;
+	password: string;
+}
 
 const Login: FunctionComponent = () => {
-	// const { getAuth } = firebase.auth;
-	// console.log(getAuth());
-	const [IsLoading, setIsLoading] = useState(true);
+	const [IsLoading, setIsLoading] = useState<boolean>(true);
+	const [Login, setLogin] = useState<boolean>(false);
+
+	// register : 원하는 input 요소를 전개연산자로 등록해서, 해당 input의 값을 관리
+	// handleSubmit : 실제 submit 이벤트 발생 시, register에 등록되어있는 input 값들을 인증처리하는 함수
+	// formState : 인증 실패 시, 커스텀 에러 메세지를 등록할 수 있는 객체.
+	const {
+		register,
+		handleSubmit,
+		formState: { errors } // formState 객체 값에서 다시 errors에 등록되어 있는 에러메세지만 추출.
+	} = useForm<Inputs>();
+
 	return (
 		<main>
 			<Head>
