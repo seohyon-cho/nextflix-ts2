@@ -3,17 +3,13 @@ import { useRouter } from 'next/router';
 import React, { createContext, useContext, useRef, useEffect, useState, useMemo } from 'react';
 import { auth } from '@/firebase';
 
-interface Iloading {
-	current: boolean;
-}
-
 //전역 Context에 전달할 인증정보 타입
 interface IAuth {
 	UserInfo: User | null;
 	signIn: (email: string, password: string) => Promise<void>;
 	signUp: (email: string, password: string) => Promise<void>;
 	logout: () => Promise<void>;
-	InitialLoading: Iloading;
+	InitialLoading: { current: boolean };
 }
 
 //전역State provider에 전달할 Props 타입
@@ -53,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			//한번이라도 인증로직이 실행되면 초기상태를 false로 변경
 			setTimeout(() => (InitialLoading.current = false), 0);
 		});
-	}, [router]);
+	}, []); //의존성 배열에서 router제거 (그렇지 않으면 무한로딩 오류)
 
 	//회원가입함수
 	const signUp = async (email: string, password: string) => {
@@ -85,7 +81,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	};
 
 	//새로고침시 같은 로그인 정보값이면 해당 값을 다시 연산하지 않도록 메모이제이션처리해서 전역 context에 넘기고
-	const memoedContext = useMemo(() => ({ UserInfo, signIn, signUp, logout, InitialLoading }), [UserInfo]);
+	const memoedContext: IAuth = useMemo(() => ({ UserInfo, signIn, signUp, logout, InitialLoading }), [UserInfo]);
 
 	//로그인정보값이 들어와있을때에만 화면 출력
 	//실시간으로 적용되는 IntialLoading값을 전역 context에 담음
